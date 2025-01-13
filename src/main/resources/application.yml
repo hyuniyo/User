@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: catch-me-study
+
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://127.0.0.1:3306/catchme-study
+    username: catchme
+    password: catchme1!
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+        highlight_sql: true
+        order_insert: true
+        order_updates: true
+        jdbc:
+          batch_size: 2000
+    defer-datasource-initialization: true
+    open-in-view: false

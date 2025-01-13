@@ -1,0 +1,18 @@
+version: '3.1'
+
+services:
+  db:
+    image: mariadb
+    container_name: catch-me-study-mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: catchme
+      MYSQL_DATABASE: catchme-study
+      MYSQL_USER: catchme
+      MYSQL_PASSWORD: catchme1!
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
