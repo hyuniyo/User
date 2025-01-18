@@ -1,4 +1,4 @@
-package com.catch_me_study.catch_me_study.domain.board.entity;
+package com.catch_me_study.catch_me_study.domain.user.entity;
 
 import com.catch_me_study.catch_me_study.domain.common.BaseEntity;
 import jakarta.persistence.*;
@@ -8,8 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.GenericGenerator;
-
-import javax.annotation.processing.Generated;
 
 @Entity // JPA에서 Entity 클래스 임을 나타냄
 @Table(name = "user") //데이터베이스의 테이블명
