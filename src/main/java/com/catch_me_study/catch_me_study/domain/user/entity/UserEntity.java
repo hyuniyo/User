@@ -36,6 +36,24 @@ public class UserEntity extends BaseEntity {
     @Comment("사용자 이름")
     private String name;
 
+    //confirmPassword는 받지 않아도 되는 이유
+    //passwordConfirm은 DTO에서만 검증하고, 엔티티에는 비밀번호만 포함
+    //passwordConfirm은 엔티티의 필드가 아니므로 update 메서드에서 받을 필요가 없음
+    //DTO에서 비밀번호와 비밀번호 확인을 비교한 후, 유효성 검증을 통과하면 엔티티에 비밀번호만 업데이트
+    //passwordConfirm 값은 DB에 저장되는 값이 아니고, 비밀번호 검증을 위한 임시적인 값이기 때문입니다. 실제로 비밀번호를 저장하는 것은 password 필드
+
+    public void update(String email, String password, String name) {
+        this.email = email;
+        this.password = password;
+        this.name = name;
+    }
+
+    @Column(nullable = false)
+    private Boolean isDeleted = false;
 
 
+    public void softDelete() {
+        this.isDeleted = true;
+
+    }
 }

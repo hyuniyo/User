@@ -1,7 +1,6 @@
 package com.catch_me_study.catch_me_study.domain.user.repository;
 
 import com.catch_me_study.catch_me_study.domain.user.entity.UserEntity;
-import org.hibernate.annotations.Comment;
 import org.springframework.data.jpa.repository.JpaRepository;
 //레포지토리의 역할은 데이터베이스와 상호작용(CRUD(Create, Read, Update, Delete))
 import java.util.List;
@@ -17,7 +16,7 @@ public interface UserRepository extends JpaRepository<UserEntity, String> {
 
     List<UserEntity> findByIsDeletedFalse(); //isDeleted가 flase인 즉, 삭제되지 않은 사용자들 가져오는 메서드 LIst로 받았으니까 여러 사용자 정보를 받는다
 
-    Optional<UserEntity> findByIdandIsDeletedFalse(String id); //사용자가 삭제되지 않았고 그 주어진 id에 맞는 사용자가 존재할 때 그 사용자를 반환함
+    Optional<UserEntity> findByIdAndIsDeletedFalse(String id); //사용자가 삭제되지 않았고 그 주어진 id에 맞는 사용자가 존재할 때 그 사용자를 반환함
     //이때 Optional을 쓴 이유는 그 조건에 맞는 id 사용자가 없을 경우 null 포인터 예외를 방지하기 위해서임
 
 }

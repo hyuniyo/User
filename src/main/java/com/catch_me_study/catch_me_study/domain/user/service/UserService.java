@@ -7,6 +7,7 @@ import com.catch_me_study.catch_me_study.domain.user.dto.UserDto;
 import com.catch_me_study.catch_me_study.domain.user.entity.UserEntity;
 import com.catch_me_study.catch_me_study.domain.user.mapper.UserMapper;
 import com.catch_me_study.catch_me_study.domain.user.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -31,17 +32,51 @@ public class UserService {
     //createUser - DTO를 Entity로 변환 후 저장소에 저장한다
     //디티오를 엔티티로 변환하는 이유는 데이터베이스와 상호작용하는 객체는 엔티티여야하기 때문
 
-    public void createUser(UserDto userDto){
+    //회원가입
+    public void createUser(UserDto userDto) {
         UserEntity userEntity = userMapper.toEntity(userDto);
         userRepository.save(userEntity);
         //save - JPA의 기본 메서드로 엔티티를 데이터베이스에 저장한다
     }
 
+    //회원정보 수정
+    //ID로 사용자 조회한다. 없을 경우 아래 예외를 발생시킨다.
+    public UserDto updateUser(String id, UserDto userDto) {
+        UserEntity userEntity = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("회원 조회 실패"));
 
-    //회원 목록 조회
-    //List<UserEntity> userEntities = userRepository.findByIsDeletedFalse();
-//회원 리스트를 담는다. 회원 객체들만 리스트에 담는다
-    //데이터베이스에서 회원 목록 가져오는 메서드가 findbyisdeletedfalse
+        userEntity.update(userDto.getEmail(), userDto.getPassword(), userDto.getName());
+        userRepository.save(userEntity);
+        return userMapper.toDto(userEntity);
+    }
+
+    //전체 회원 조회
+    public List<UserDto> getAllUsers() {
+        List<UserEntity> users = userRepository.findByIsDeletedFalse();
+        return userMapper.toDto(users);
+    }
+
+    //특정 회원 조회
+    public UserDto getUserById(String id) {
+        UserEntity userEntity = userRepository.findByIdAndIsDeletedFalse(id)
+                .orElseThrow(() -> new EntityNotFoundException("특정 회원 조회 실패"));
+        return userMapper.toDto(userEntity);
+
+    }
+
+    //회원 삭제
+    public void deleteUser(String id) {
+        UserEntity userEntity = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("회원 조회 실패"));
+
+        userEntity.softDelete();
+
+        userRepository.save(userEntity);
+        //isDeleted = true로 설정된 데이터는 조회 쿼리에서 제외
+        //데이터베이스에서 물리적으로 삭제하지 않고, 삭제된 상태를 나타내는 플래그만 변경하는 방법
+        //실제 데이터를 보관하면서도 사용자에게는 삭제된 것처럼 보이게 처리
+        //그래서 레포지토리가ㄷ ek isdeletedfasle 이런 네임인듯?
+    }
 
 
 }
