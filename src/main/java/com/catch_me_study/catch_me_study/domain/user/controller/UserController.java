@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController //컨트롤러가 반환할 때 json 로 클라이언트에게 전달
-@RequestMapping("/user") //요거 뭘로 해야하는거지?
+@RequestMapping("/users") //요거 뭘로 해야하는거지? // rest api는 명사를 복수형으로
 @RequiredArgsConstructor //롬복 애너테이션으로 final이 붙은 필드를 생성자에 포함
 public class UserController {
 
@@ -36,9 +36,9 @@ public class UserController {
 //    예외를 다르게 처리하고 싶다면 예외 처리 코드 작성 필요
 
     @PostMapping
-    public ResponseEntity<String> createUser(@RequestBody @Valid UserDto userDto) {
-        userService.createUser(userDto);
-        return ResponseEntity.ok("회원가입 성공");
+    public ResponseEntity<UserDto> createUser(@RequestBody @Valid UserDto userDto) {
+        UserDto createdUser = userService.createUser(userDto);
+        return ResponseEntity.ok(createdUser);
     }
 
     //경로 변수로 사용자 ID를 전달받는다.

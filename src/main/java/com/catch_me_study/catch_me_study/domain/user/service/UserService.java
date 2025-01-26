@@ -32,12 +32,25 @@ public class UserService {
     //createUser - DTO를 Entity로 변환 후 저장소에 저장한다
     //디티오를 엔티티로 변환하는 이유는 데이터베이스와 상호작용하는 객체는 엔티티여야하기 때문
 
-    //회원가입
-    public void createUser(UserDto userDto) {
-        UserEntity userEntity = userMapper.toEntity(userDto);
-        userRepository.save(userEntity);
-        //save - JPA의 기본 메서드로 엔티티를 데이터베이스에 저장한다
-    }
+    //회원가입 mapper 생성 방식
+//    public void createUser(UserDto userDto) {
+//        UserEntity userEntity = userMapper.toEntity(userDto);
+//        userRepository.save(userEntity);
+//        //save - JPA의 기본 메서드로 엔티티를 데이터베이스에 저장한다
+//    }
+
+    //회원가입 bulder 생성 방식
+    public UserDto createUser(UserDto userDto) {
+        UserEntity userEntity = UserEntity.builder()
+                .email(userDto.getEmail())
+                .password(userDto.getPassword())
+                .name(userDto.getName())
+                .build();
+        userEntity = userRepository.save(userEntity);
+        return userMapper.toDto(userEntity);
+    }//userdto에 @getter 가 있어서 각 필드에 대한 getemail 등을 자동생성함
+
+
 
     //회원정보 수정
     //ID로 사용자 조회한다. 없을 경우 아래 예외를 발생시킨다.

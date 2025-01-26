@@ -24,7 +24,7 @@ public class UserEntity extends BaseEntity {
     @Comment("고유 ID (UUID)")
     private String id;
 
-    @Column(length = 100, nullable = false)
+    @Column(length = 100, nullable = false, updatable = false)
     @Comment("이메일 주소(아이디)")
     private String email;
 

@@ -38,24 +38,24 @@ public class UserDto extends BaseDto {
     private String confirmPassword;
 
     @NotBlank
+    @Size(max = 50)
+    private String name;
+
+    @NotBlank
     @AssertTrue(message = "비밀번호와 비밀번호 확인 값이 일치하지 않음")
+    public Boolean isPasswordConfirmed() {
+        return password != null && password.equals(confirmPassword);
+    }
     //@AssertTrue는 유효성 검증을 위해 사용되는 애너테이션
     //해당 메서드가 true를 반환하는지 확인하는 역할
     //이 메서드는 boolean 값을 반환하는 메서드여야 함.
     //false를 반환하면 유효성 검증에 실패한 것
     //여기서는 false면 애너테이션에 지정된 메시지인 "비밀번호와 비밀번호 확인 값이 일치하지 않음"이 포함된 유효성 검사 실패가 발생
     //400 Bad Request 응답과 함께 오류 메시지가 전달
-    public Boolean isPasswordConfirmed() {
-        return password != null && password.equals(confirmPassword);
-    }
+
 
     //@NotBlank"를 쓰지 않고 "!=null" 이 대중적인 이유
     // "!=null"이 명시적으로 null 검사를 해주고 두 값을 비교하는 방식으로 대중화 개발 문화에서 선호함 (안전성 높임)
-
     //String str1 = null;  // null, 아무 값도 참조하지 않음
     //String str2 = "";    // 빈 문자열, 값은 있지만 비어있는 상태
-
-    @NotBlank
-    @Size(max = 50)
-    private String name;
 }
