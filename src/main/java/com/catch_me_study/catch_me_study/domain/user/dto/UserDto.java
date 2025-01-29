@@ -24,8 +24,21 @@ import lombok.experimental.SuperBuilder; // DTO를 빌더 패턴으로 만들기
 @AllArgsConstructor
 public class UserDto extends BaseDto {
 
+    public interface Create {
+
+    }
+
+    public interface Update {
+
+    }
+    //유효성 검사를 그룹화하려는 목적으로 인터페이스 코드를 작성함
+    //회원가입할 때는 email이 필수로 입력되어야 하고, 수정할 때는 email을 선택적으로 입력
+    //Update 인터페이스는 그룹화를 위한 구분자 역할 / 실제로 해당 그룹을 사용하려면 유효성 검사 시점에만 @Validated(Update.class)와 같은 방식으로 적용
+
+    private Boolean isDeleted = false;
+
     @Email
-    @NotBlank
+    @NotBlank(groups = Create.class)
     @Size(max = 100)
     private String email;
 
@@ -53,9 +66,9 @@ public class UserDto extends BaseDto {
     //여기서는 false면 애너테이션에 지정된 메시지인 "비밀번호와 비밀번호 확인 값이 일치하지 않음"이 포함된 유효성 검사 실패가 발생
     //400 Bad Request 응답과 함께 오류 메시지가 전달
 
-
     //@NotBlank"를 쓰지 않고 "!=null" 이 대중적인 이유
     // "!=null"이 명시적으로 null 검사를 해주고 두 값을 비교하는 방식으로 대중화 개발 문화에서 선호함 (안전성 높임)
     //String str1 = null;  // null, 아무 값도 참조하지 않음
     //String str2 = "";    // 빈 문자열, 값은 있지만 비어있는 상태
+
 }

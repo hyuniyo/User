@@ -51,17 +51,20 @@ public class UserService {
     }//userdto에 @getter 가 있어서 각 필드에 대한 getemail 등을 자동생성함
 
 
-
     //회원정보 수정
     //ID로 사용자 조회한다. 없을 경우 아래 예외를 발생시킨다.
     public UserDto updateUser(String id, UserDto userDto) {
         UserEntity userEntity = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("회원 조회 실패"));
 
-        userEntity.update(userDto.getEmail(), userDto.getPassword(), userDto.getName());
+        if (userEntity.getEmail() != null) {
+            throw new IllegalArgumentException("이메일은 수정 불가");
+        }
+        userEntity.update(userDto.getPassword(), userDto.getName());
         userRepository.save(userEntity);
         return userMapper.toDto(userEntity);
-    }
+    } // IllegalArgumentException = 잘못된 인자가 전달되었을 때 사용하는 예외
+    //클라이언트에게 이메일 수정이 불가능하다는 사실을 알려줌
 
     //전체 회원 조회
     public List<UserDto> getAllUsers() {
